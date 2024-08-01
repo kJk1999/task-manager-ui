@@ -63,8 +63,8 @@ const App = () => {
   }
  
 const handleDelete=(id)=> {
-axios.delete(`http://localhost:3000/api/todoslist/${id}`).
-then(response => {
+axios.delete(`http://localhost:3000/api/todoslist/${id}`)
+.then(response => {
 console.log(response.data)
 setFilteredTasks(response.data)
  
