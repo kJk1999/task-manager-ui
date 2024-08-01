@@ -18,7 +18,7 @@ const AddTicketForm = ({ setAddnewTask, setTasks }) => {
     }),
     onSubmit: (values) => {
       axios
-        .post(`${process.env.REACT_APP_API_URL}/api/todoslist`, {
+        .post(`https://task-manager-xgmq.onrender.com/api/todoslist`, {
           name: values.selectedOption,
           ticketNumber: values.ticketNumber,
           release: values.release,
