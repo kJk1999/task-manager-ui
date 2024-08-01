@@ -18,7 +18,7 @@ const AddTicketForm = ({ setAddnewTask, setTasks }) => {
     }),
     onSubmit: (values) => {
       axios
-        .post("http://localhost:3000/api/todoslist", {
+        .post(`${process.env.REACT_APP_API_URL}/api/todoslist`, {
           name: values.selectedOption,
           ticketNumber: values.ticketNumber,
           release: values.release,

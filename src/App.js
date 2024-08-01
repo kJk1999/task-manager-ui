@@ -36,7 +36,7 @@ const App = () => {
 
   useEffect(
     () => {
-   axios.get('http://localhost:3000/api/todoslist')
+   axios.get(`${process.env.REACT_APP_API_URL}/api/todoslist`)
       .then(response => {
         console.log(response, 'response');
         setTasks(response.data);
@@ -63,7 +63,7 @@ const App = () => {
   }
  
 const handleDelete=(id)=> {
-axios.delete(`http://localhost:3000/api/todoslist/${id}`)
+axios.delete(`${process.env.REACT_APP_API_URL}/api/todoslist/${id}`)
 .then(response => {
 console.log(response.data)
 setFilteredTasks(response.data)
