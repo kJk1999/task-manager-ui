@@ -123,7 +123,9 @@ const App = () => {
   const handleStatusChange=(id,updatedFields)=>{
     console.log(updatedFields)
     axios.patch(`https://task-manager-xgmq.onrender.com/api/todoslist/:${id}`,updatedFields).then(response =>{
-      console.log(response,"response")
+      setTasks(response.data);
+        setFilteredTasks(response.data);
+      
     })
 
   }
