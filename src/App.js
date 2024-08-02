@@ -3,7 +3,13 @@ import AddTicketForm from "./AddTicketForm";
 import axios from "axios";
 import { useFormik } from "formik";
 import { MdDelete } from "react-icons/md";
+import './App.css'
 const App = () => {
+  const [addnewTask, setAddnewTask] = useState(false);
+  const [taskOwner, setTaskOwner] = useState("");
+  const [tasks, setTasks] = useState([]);
+  const [selectedRelease, setSelectedRelease] = useState("");
+  const [filteredTasks, setFilteredTasks] = useState([]);
   const formik = useFormik({
     initialValues: {
       selectedOption: "",
@@ -13,11 +19,10 @@ const App = () => {
     },
   });
 
-  const [addnewTask, setAddnewTask] = useState(false);
-  const [tasks, setTasks] = useState([]);
-  const [filteredTasks, setFilteredTasks] = useState([]);
+  
 
   const options = [
+    {name:"Select All"},
     { name: "ManojKumar Margam" },
     { name: "Bhargav Gollu" },
     { name: "Vinay Manthani" },
@@ -50,24 +55,61 @@ const App = () => {
 
   useEffect(() => {
     if (formik.values.selectedOption) {
-      setFilteredTasks(
-        tasks.filter((task) => task.name === formik.values.selectedOption)
-      );
+      console.log('triggered')
+      if(formik.values.selectedOption !== "Select All"){
+        setFilteredTasks(
+          tasks.filter(
+            (task) =>
+              task.name === formik.values.selectedOption &&
+              task.release.includes(selectedRelease)
+          )
+        );
+
+      }
+      else{
+        setFilteredTasks(
+          tasks.filter(
+            (task) =>
+              
+              task.release.includes(selectedRelease)
+          )
+        );
+
+      }
+      
     } else {
       setFilteredTasks(tasks);
     }
-  }, [formik.values.selectedOption, tasks]);
+  }, [formik.values.selectedOption, tasks,selectedRelease]);
 
   const handleOptionChange = (event) => {
+    setTaskOwner(event.target.value);
     formik.setFieldValue("selectedOption", event.target.value);
   };
   const handleRelease = (e) => {
-    console.log();
-    const filterdItems = tasks.filter((eachTask) =>
-      eachTask.release.includes(e.target.value)
-    );
-    console.log(filterdItems);
-    setFilteredTasks(filterdItems);
+    setSelectedRelease(e.target.value);
+    console.log(taskOwner,"taskOwner")
+    let filterdItems;
+    if(taskOwner && taskOwner !== "Select All" ){
+       filterdItems = tasks.filter(
+        (eachTask) =>
+          eachTask.release.includes(e.target.value) && eachTask.name === taskOwner
+      );
+      setFilteredTasks(filterdItems);
+
+    }
+    else{
+      setFilteredTasks( tasks.filter(
+        (eachTask) =>
+          eachTask.release.includes(e.target.value) ))
+    }
+    
+
+    
+    
+    
+
+    
   };
 
   const handleDelete = (id) => {
@@ -78,6 +120,13 @@ const App = () => {
         setFilteredTasks(response.data);
       });
   };
+  const handleStatusChange=(id,updatedFields)=>{
+    console.log(updatedFields)
+    axios.patch(`https://task-manager-xgmq.onrender.com/api/todoslist/:${id}`,updatedFields).then(response =>{
+      console.log(response,"response")
+    })
+
+  }
   return (
     <div className="min-h-screen flex-col items-centerbg-gray-100 p-4">
       <h1 className="text-5xl text-center font-bold">Ticket Tracker</h1>
@@ -113,7 +162,7 @@ const App = () => {
                     onBlur={formik.handleBlur}
                     value={formik.values.selectedOption}
                   >
-                    <option value="">Select a name</option>
+                    
                     {options.map((user) => (
                       <option key={user.name} value={user.name}>
                         {user.name}
@@ -128,7 +177,7 @@ const App = () => {
                     )}
                 </div>
                 <div>
-                  <label htmlFor="release" className="text-xs block mb-1">
+                  <label htmlFor="release" className="block mb-1 text-xs">
                     release
                   </label>
                   <input
@@ -155,16 +204,19 @@ const App = () => {
                 <h1 className="text-gray-700 font-semibold text-lg">
                   {eachTask.ticketNumber}
                 </h1>
-                 <div className="flex justify-between text-gray-600 mb-2">
-          
-                <h3>Release: {eachTask.release}</h3>
-
-              </div>
-              <div>
-                <h3>{eachTask.name}</h3>
-              </div>
-                <select id="options" className=" text-green-500" value={eachTask.status}>
-                  {statusList.map(eachOption =>(
+                <div className="flex justify-between text-lg font-semibold text-gray-600 mb-2">
+                  <h3>Release: {eachTask.release}</h3>
+                </div>
+                <div>
+                  <h3>{eachTask.name}</h3>
+                </div>
+                <select
+                  id="options"
+                  className=" text-green-500"
+                  value={eachTask.status}
+                  onChange={(event)=>handleStatusChange(eachTask._id,{status:event.target.value})}
+                >
+                  {statusList.map((eachOption) => (
                     <option value={eachOption.value}>{eachOption.name}</option>
                   ))}
                 </select>
@@ -172,15 +224,12 @@ const App = () => {
                   className="text-2xl cursor-pointer"
                   onClick={() => handleDelete(eachTask._id)}
                 >
-                  <MdDelete />
+                  <MdDelete  className="delete-icon"/>
                 </p>
               </div>
 
-             
-
               <div className="flex justify-between items-center text-gray-600 text-sm mb-2">
                 <p className="text-gray-700">{eachTask.description}</p>
-              
               </div>
             </li>
           ))}
