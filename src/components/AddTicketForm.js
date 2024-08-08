@@ -23,6 +23,11 @@ const AddTicketForm = ({ setAddnewTask, setTasks }) => {
           ticketNumber: values.ticketNumber,
           release: values.release,
           description: values.description,
+        },{
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("JWT_TOKEN")}`,
+          },
         })
         .then((response) => setTasks((pv) => [...pv, response.data]));
 

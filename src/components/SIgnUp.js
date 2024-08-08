@@ -34,12 +34,7 @@ const SIgnUp = () => {
       };
       try {
         axios
-          .post("https://task-manager-xgmq.onrender.com/api/signup", signUpDetails,{
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("JWT_TOKEN")}`,
-            },
-          })
+          .post("https://task-manager-xgmq.onrender.com/api/signup", signUpDetails)
           .then((response) => {
             if (response?.data?.Status === "fail") {
               navigate("/signin");

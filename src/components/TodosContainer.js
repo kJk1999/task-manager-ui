@@ -103,7 +103,7 @@ const TodosContainer = () => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        
         setFilteredTasks(response.data);
       });
   };
