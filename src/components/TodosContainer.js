@@ -96,7 +96,12 @@ const TodosContainer = () => {
 
   const handleDelete = (id) => {
     axios
-      .delete(`https://task-manager-xgmq.onrender.com/api/todoslist/${id}`)
+      .delete(`https://task-manager-xgmq.onrender.com/api/todoslist/${id}`,{
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("JWT_TOKEN")}`,
+        },
+      })
       .then((response) => {
         console.log(response.data);
         setFilteredTasks(response.data);
@@ -107,7 +112,12 @@ const TodosContainer = () => {
     axios
       .patch(
         `https://task-manager-xgmq.onrender.com/api/todoslist/${id}`,
-        updatedFields
+        updatedFields,{
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("JWT_TOKEN")}`,
+          },
+        }
       )
       .then((response) => {
         console.log(response, "data");

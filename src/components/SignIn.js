@@ -30,7 +30,14 @@ const SignIn = () => {
           email:values.email,
           password:values.password
         }
-        axios.post("https://task-manager-xgmq.onrender.com/api/signin",signInDetails).then(response=>{
+        axios.post("https://task-manager-xgmq.onrender.com/api/signin",signInDetails,{
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('JWT_TOKEN')}`,
+          }}
+
+
+        ).then(response=>{
           if(response?.data?.Status==="Success"){
             console.log(response.data)
             localStorage.setItem("JWT_TOKEN",response.data.token)
