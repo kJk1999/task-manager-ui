@@ -56,12 +56,12 @@ const SignIn = () => {
     },
   });
   return (
-    <div className="h-screen flex flex-col justify-center items-center">
-      <h1>SIGNIN FORM</h1>
-      <div className="flex ">
-        <form className="self-center" onSubmit={formik.handleSubmit}>
+    <div className="min-h-screen m-10 md:m-0 flex flex-col justify-center items-center">
+      <h1 className="text-xl md:text-3xl font-semibold">SIGNIN FORM</h1>
+      <div className=" flex flex-col items-center md:flex md:flex-row md:justify-center">
+        <form className="self-center my-4 md:mx-4 shadow-2xl p-3 md:w-1/2" onSubmit={formik.handleSubmit}>
           <label
-            className="block text-xs font-muli mb-1"
+            className="block text-lg font-muli mb-1"
             htmlFor="selectedOption"
           >
             Email
@@ -86,7 +86,7 @@ const SignIn = () => {
           )}
 
           <div className="mt-5">
-            <label htmlFor="password" className="block text-xs">
+            <label htmlFor="password" className="block text-lg">
               password
             </label>
             <input
@@ -117,7 +117,9 @@ const SignIn = () => {
             Sign In
           </button>
         </form>
-        <img src="images/signin.png" className="w-1/2" alt="signin-img" />
+        <div className="md:w-1/2">
+        <img src="images/signin.png" className="w-full" alt="signin-img" />
+        </div>
       </div>
     </div>
   );

@@ -34,7 +34,10 @@ const SIgnUp = () => {
       };
       try {
         axios
-          .post("https://task-manager-xgmq.onrender.com/api/signup", signUpDetails)
+          .post(
+            "https://task-manager-xgmq.onrender.com/api/signup",
+            signUpDetails
+          )
           .then((response) => {
             if (response?.data?.Status === "Success") {
               navigate("/signin");
@@ -54,13 +57,13 @@ const SIgnUp = () => {
     },
   });
   return (
-    <div className="h-screen flex flex-col justify-center items-center">
-      <h1>SIGNUP FORM</h1>
-      <div className="flex ">
-        <form className="self-center" onSubmit={formik.handleSubmit}>
+    <div className="min-h-screen m-10 md:m-0 flex flex-col justify-center items-center">
+      <h1 className="text-xl md:text-3xl font-semibold">SIGNUP FORM</h1>
+      <div className="flex flex-col items-center md:flex md:flex-row md:justify-center">
+        <form className="self-center my-4 md:mx-4 shadow-2xl p-3 md:w-1/2" onSubmit={formik.handleSubmit}>
           <div>
             <label
-              className="block text-xs font-muli mb-1"
+              className="block text-lg font-muli mb-1"
               htmlFor="selectedOption"
             >
               FullName
@@ -88,7 +91,7 @@ const SIgnUp = () => {
           </div>
           <div>
             <label
-              className="block text-xs font-muli mb-1"
+              className="block text-lg font-muli mb-1"
               htmlFor="selectedOption"
             >
               Email
@@ -114,7 +117,7 @@ const SIgnUp = () => {
           </div>
 
           <div className="mt-5">
-            <label htmlFor="password" className="block text-xs">
+            <label htmlFor="password" className="block text-lg">
               password
             </label>
             <input
@@ -150,7 +153,9 @@ const SIgnUp = () => {
             </p>
           )}
         </form>
-        <img src="images/sign-up.png" className="w-1/2" alt="signin-img" />
+        <div className="md:w-1/2">
+          <img src="images/sign-up.png"  alt="signin-img" />
+        </div>
       </div>
     </div>
   );

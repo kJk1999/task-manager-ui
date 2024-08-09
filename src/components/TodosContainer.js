@@ -6,7 +6,7 @@ import TodoItem from "./TodoItem";
 
 const TodosContainer = () => {
   const [addnewTask, setAddnewTask] = useState(false);
-  
+
   const [taskOwner, setTaskOwner] = useState("");
   const [tasks, setTasks] = useState([]);
   const [selectedRelease, setSelectedRelease] = useState("");
@@ -97,31 +97,28 @@ const TodosContainer = () => {
 
   const handleDelete = (id) => {
     axios
-      .delete(`https://task-manager-xgmq.onrender.com/api/todoslist/${id}`,{
+      .delete(`https://task-manager-xgmq.onrender.com/api/todoslist/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("JWT_TOKEN")}`,
         },
       })
       .then((response) => {
-        
         setFilteredTasks(response.data);
       })
-      .catch(err=>{
-        if(err.response.data === "Unauthorized to delete this Todo Item"){
-          alert("you can modify your tasks only!")
+      .catch((err) => {
+        if (err.response.data === "Unauthorized to delete this Todo Item") {
+          alert("you can modify your tasks only!");
         }
-        
-      
-
-      })
+      });
   };
   const handleStatusChange = (id, updatedFields) => {
     console.log(updatedFields);
     axios
       .patch(
         `https://task-manager-xgmq.onrender.com/api/todoslist/${id}`,
-        updatedFields,{
+        updatedFields,
+        {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("JWT_TOKEN")}`,
@@ -132,73 +129,76 @@ const TodosContainer = () => {
         console.log(response, "data");
         setTasks(response.data);
         setFilteredTasks(response.data);
-      });
+      })
+      .catch(err=>{
+           if(err?.response?.data?.message=== "You can only modify your todos"){
+              alert(err.response.data.message)
+           }
+      })
   };
   return (
     <div className="min-h-screen flex-col items-centerbg-gray-100 p-4">
-      <h1 className="text-5xl text-center font-bold">Ticket Tracker</h1>
-      <div className=" p-8 w-full">
-        <form onSubmit={formik.handleSubmit}>
-          <div className="flex items-center justify-between my-4">
-            <div className="flex justify-between w-full">
+      <h1 className="text-xl md:text-5xl text-center font-bold">Ticket Tracker</h1>
+      <div className="pt-8 lg:p-8 w-full">
+        <div className="flex lg:justify-space-between">
+          <form onSubmit={formik.handleSubmit} className="self-center">
+            <div>
               <button
                 onClick={() => setAddnewTask(true)}
-                className="bg-blue-500 w-32 text-white rounded hover:bg-blue-600"
+                className="bg-blue-500 w-32 text-white rounded hover:bg-blue-600 p-3"
               >
                 Add Task
               </button>
-
-              <div className="flex justify-end w-full">
-                <div className="mr-2">
-                  <label
-                    className="block text-xs font-muli mb-1"
-                    htmlFor="selectedOption"
-                  >
-                    filter by name
-                  </label>
-                  <select
-                    id="selectedOption"
-                    name="selectedOption"
-                    className={`bg-gray-100 w-full p-1.5 text-xs border-slate-500 border-solid border rounded  ${
-                      formik.errors.selectedOption &&
-                      formik.touched.selectedOption
-                        ? "border border-red-500"
-                        : "border-slate-500 border-solid"
-                    }`}
-                    onChange={handleOptionChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.selectedOption}
-                  >
-                    {options.map((user) => (
-                      <option key={user.name} value={user.name}>
-                        {user.name}
-                      </option>
-                    ))}
-                  </select>
-                  {formik.errors.selectedOption &&
-                    formik.touched.selectedOption && (
-                      <div className="text-red-500 text-xs">
-                        {formik.errors.selectedOption}
-                      </div>
-                    )}
-                </div>
-                <div>
-                  <label htmlFor="release" className="block mb-1 text-xs">
-                    release
-                  </label>
-                  <input
-                    type="text"
-                    id="release"
-                    className="border-slate-500 border-solid border rounded bg-transparent p-1"
-                    name="release"
-                    placeholder="search release"
-                    onChange={handleRelease}
-                  />
-                </div>
-              </div>
+            </div>
+          </form>
+          <div className=" ml-4 md:ml-0 flex flex-col md:flex-row justify-end w-full">
+            <div className="mr-2">
+              <label
+                className="block text-sm md:text-lg font-muli mb-1"
+                htmlFor="selectedOption"
+              >
+                filter by name
+              </label>
+              <select
+                id="selectedOption"
+                name="selectedOption"
+                className={`bg-gray-100 w-full p-1.5  text-sm md:text-lg border-slate-500 border-solid border rounded  ${
+                  formik.errors.selectedOption && formik.touched.selectedOption
+                    ? "border border-red-500"
+                    : "border-slate-500 border-solid"
+                }`}
+                onChange={handleOptionChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.selectedOption}
+              >
+                {options.map((user) => (
+                  <option key={user.name} value={user.name}>
+                    {user.name}
+                  </option>
+                ))}
+              </select>
+              {formik.errors.selectedOption &&
+                formik.touched.selectedOption && (
+                  <div className="text-red-500 text-xs">
+                    {formik.errors.selectedOption}
+                  </div>
+                )}
+            </div>
+            <div>
+              <label htmlFor="release" className="block mb-1  text-sm md:text-lg">
+                release
+              </label>
+              <input
+                type="text"
+                id="release"
+                className="border-slate-500 border-solid border  text-sm md:text-lg rounded bg-transparent p-1"
+                name="release"
+                placeholder="search release"
+                onChange={handleRelease}
+              />
             </div>
           </div>
-        </form>
+        </div>
 
         <ul className="mt-6 space-y-4">
           {filteredTasks.map((eachTask) => (
@@ -207,7 +207,6 @@ const TodosContainer = () => {
               handleDelete={handleDelete}
               handleStatusChange={handleStatusChange}
               statusList={statusList}
-            
             />
           ))}
         </ul>
