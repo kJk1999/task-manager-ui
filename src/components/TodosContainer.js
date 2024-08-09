@@ -7,7 +7,7 @@ import TodoItem from "./TodoItem";
 const TodosContainer = () => {
   const [addnewTask, setAddnewTask] = useState(false);
 
-  const [taskOwner, setTaskOwner] = useState("");
+  const [taskOwner, setTaskOwner] = useState("Select All");
   const [tasks, setTasks] = useState([]);
   const [selectedRelease, setSelectedRelease] = useState("");
   const [filteredTasks, setFilteredTasks] = useState([]);
@@ -53,13 +53,13 @@ const TodosContainer = () => {
   }, []);
 
   useEffect(() => {
-    if (formik.values.selectedOption) {
+    if (taskOwner) {
       console.log("triggered");
-      if (formik.values.selectedOption !== "Select All") {
+      if (taskOwner !== "Select All") {
         setFilteredTasks(
           tasks.filter(
             (task) =>
-              task.name === formik.values.selectedOption &&
+              task.name === taskOwner &&
               task.release.includes(selectedRelease)
           )
         );
@@ -71,7 +71,7 @@ const TodosContainer = () => {
     } else {
       setFilteredTasks(tasks);
     }
-  }, [formik.values.selectedOption, tasks, selectedRelease]);
+  }, [taskOwner, tasks, selectedRelease]);
 
   const handleOptionChange = (event) => {
     setTaskOwner(event.target.value);
@@ -145,7 +145,7 @@ const TodosContainer = () => {
             <div>
               <button
                 onClick={() => setAddnewTask(true)}
-                className="bg-blue-500 w-32 text-white rounded hover:bg-blue-600 p-3"
+                className="bg-blue-500 w-20  md:w-32 text-white rounded hover:bg-blue-600 p-1 md:p-3"
               >
                 Add Task
               </button>
