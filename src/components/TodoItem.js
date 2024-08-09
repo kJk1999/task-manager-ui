@@ -6,8 +6,10 @@ const TodoItem = ({
   handleStatusChange,
   handleDelete,
   statusList,
+ 
 }) => {
   return (
+    
     <li
       key={eachTask.ticketNumber}
       className="bg-white p-4 rounded-lg shadow-sm border border-gray-200"
@@ -48,6 +50,9 @@ const TodoItem = ({
         <p className="text-gray-700">{eachTask.description}</p>
       </div>
     </li>
+   
+    
+    
   );
 };
 

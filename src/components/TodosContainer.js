@@ -6,6 +6,7 @@ import TodoItem from "./TodoItem";
 
 const TodosContainer = () => {
   const [addnewTask, setAddnewTask] = useState(false);
+  
   const [taskOwner, setTaskOwner] = useState("");
   const [tasks, setTasks] = useState([]);
   const [selectedRelease, setSelectedRelease] = useState("");
@@ -105,7 +106,15 @@ const TodosContainer = () => {
       .then((response) => {
         
         setFilteredTasks(response.data);
-      });
+      })
+      .catch(err=>{
+        if(err.response.data === "Unauthorized to delete this Todo Item"){
+          alert("you can modify your tasks only!")
+        }
+        
+      
+
+      })
   };
   const handleStatusChange = (id, updatedFields) => {
     console.log(updatedFields);
@@ -198,6 +207,7 @@ const TodosContainer = () => {
               handleDelete={handleDelete}
               handleStatusChange={handleStatusChange}
               statusList={statusList}
+            
             />
           ))}
         </ul>

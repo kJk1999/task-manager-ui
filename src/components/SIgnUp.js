@@ -36,7 +36,7 @@ const SIgnUp = () => {
         axios
           .post("https://task-manager-xgmq.onrender.com/api/signup", signUpDetails)
           .then((response) => {
-            if (response?.data?.Status === "fail") {
+            if (response?.data?.Status === "Success") {
               navigate("/signin");
               console.log("signup Success");
             } else {

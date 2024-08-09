@@ -46,7 +46,13 @@ const SignIn = () => {
             setIsAuthenticated(true);
             navigate("/");
           }
-        });
+          
+        })
+        .catch(err=>{
+          if(err?.response?.data?.message ==="User Not Registerd!"){
+                navigate('/signup')
+          }
+        })
     },
   });
   return (
